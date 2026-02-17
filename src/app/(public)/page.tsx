@@ -1,5 +1,6 @@
 import { Header } from "./_components/Header";
 import { Hero } from "./_components/Hero";
+import { Professionals } from "./_components/Professionals";
 
 export default function HomePage() {
   return (
@@ -7,6 +8,7 @@ export default function HomePage() {
       <Header />
       <div>
         <Hero />
+        <Professionals />
       </div>
     </div>
   );
