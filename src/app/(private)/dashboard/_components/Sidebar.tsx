@@ -1,5 +1,18 @@
 "use client";
 
+import { ReactNode, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Banknote,
+  CalendarCheck2,
+  ChevronLeft,
+  ChevronRight,
+  Folder,
+  List,
+  User,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import {
@@ -10,23 +23,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
 import clsx from "clsx";
-import {
-  Banknote,
-  CalendarCheck2,
-  ChevronLeft,
-  ChevronRight,
-  Folder,
-  List,
-  User,
-} from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ReactNode, useState } from "react";
 
 export function SidebarDashboard({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const pathname = usePathname();
 
   return (
     <div className="flex min-h-screen w-full">
@@ -145,7 +148,12 @@ export function SidebarDashboard({ children }: { children: ReactNode }) {
           <Sheet>
             <div className="flex items-center gap-4">
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="md:hidden">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="md:hidden"
+                  onClick={() => setIsCollapsed(false)}
+                >
                   <List className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
