@@ -10,15 +10,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { LogIn, Menu } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { handleRegister } from "../_actions/login";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const session = null;
+  const { data: session, status } = useSession();
 
   const navItems = [{ label: "Profissionais", href: "#profissionais" }];
+
+  async function handleLogin() {
+    await handleRegister("github");
+  }
 
   const NavLinks = () => (
     <>
@@ -35,7 +40,9 @@ export function Header() {
         </Button>
       ))}
 
-      {session && (
+      {status === "loading" ? (
+        <></>
+      ) : session ? (
         <Button>
           <Link
             href="/dashboard"
@@ -44,9 +51,8 @@ export function Header() {
             Painel da Clínica
           </Link>
         </Button>
-      )}
-      {!session && (
-        <Button>
+      ) : (
+        <Button onClick={handleLogin}>
           <LogIn />
           Fazer Login
         </Button>
