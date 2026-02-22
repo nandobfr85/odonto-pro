@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   name: z
@@ -50,6 +51,8 @@ export async function updateProfile(formData: FormSchema) {
         times: formData.times ?? [],
       },
     });
+
+    revalidatePath("/dashboard/profile");
 
     return {
       data: "Perfil atualizado com sucesso.",

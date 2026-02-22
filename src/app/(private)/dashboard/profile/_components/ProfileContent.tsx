@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 import { ProfileFormData, useProfileForm } from "./ProfileForm";
 
@@ -39,6 +40,7 @@ import { cn } from "@/lib/utils";
 
 import { Prisma } from "@/generated/prisma/browser";
 import { updateProfile } from "../_actions/update-profile";
+import { extractPhoneNumber, formatPhone } from "@/utils/formatPhone";
 
 type UserWithSubscription = Prisma.UserGetPayload<{
   include: { subscription: true };
@@ -102,13 +104,17 @@ export const ProfileContent = ({ user }: ProfileContentProps) => {
     const response = await updateProfile({
       name: values.name,
       address: values.address,
-      phone: values.phone,
+      phone: extractPhoneNumber(values.phone ?? ""),
       status: values.status === "active" ? true : false,
       timeZone: values.timeZone,
       times: selectedHours,
     });
 
-    console.log("Profile update response:", response);
+    if (response.error) {
+      toast.error(response.error);
+    }
+
+    toast.success("Perfil atualizado com sucesso!");
   }
 
   return (
@@ -173,7 +179,11 @@ export const ProfileContent = ({ user }: ProfileContentProps) => {
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="Digite o telefone da clínica"
+                          placeholder="(XX) XXXXX-XXXX"
+                          onChange={(e) => {
+                            const formattedValue = formatPhone(e.target.value);
+                            field.onChange(formattedValue);
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
