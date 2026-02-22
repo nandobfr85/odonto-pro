@@ -1,14 +1,12 @@
-import { redirect } from 'next/navigation';
+import { redirect } from "next/navigation";
 
-import getSession from '@/lib/getSession';
+import getSession from "@/lib/getSession";
 
 export default async function DashboardPage() {
-  const session = await getSession()
-
-  console.log('Session: ', session)
+  const session = await getSession();
 
   if (!session) {
-    redirect('/')
+    redirect("/");
   }
 
   return (
